@@ -12,7 +12,7 @@ block content
             | SignUp
         if message.length > 0
           .alert.alert-danger  #{message}
-        form(action='/login', method='post')
+        form(action=page, method='post')
           .form-group
             label Email
             input.form-control(type='text', name='email')
