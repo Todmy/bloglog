@@ -1,7 +1,8 @@
 module.exports = function(app, passport) {
 
   app.all('*', function(req, res, next) {
-    app.locals.isLoggedIn = typeof req.user === 'object';
+    app.locals.user = req.user;
+    app.locals.page = req.path;
     next();
   });
 
@@ -10,8 +11,7 @@ module.exports = function(app, passport) {
   });
 
   app.get('/login', function(req, res) {
-    res.render('auth', { page: req.path, message: req.flash('loginMessage') })
-    // res.render('login', { message: req.flash('loginMessage') })
+    res.render('auth', { message: req.flash('loginMessage') })
   });
 
   app.post('/login', passport.authenticate('local-login', {
@@ -21,8 +21,7 @@ module.exports = function(app, passport) {
   }))
 
   app.get('/signup', function(req, res) {
-    res.render('auth', { page: req.path, message: req.flash('signupMessage') })
-    // res.render('signup', { message: req.flash('signupMessage') })
+    res.render('auth', { message: req.flash('signupMessage') })
   });
 
   app.post('/signup', passport.authenticate('local-signup', {
@@ -36,7 +35,6 @@ module.exports = function(app, passport) {
   });
 
   app.get('/logout', function(req, res) {
-    delete app.locals.username; // app.locals.username = profile.username;
     req.logout();
     res.redirect('/')
   });

@@ -17,7 +17,7 @@ html
             li
               a(href='/contact') Contact
           ul.authorization.nav.navbar-nav.pull-right
-            if (!isLoggedIn)
+            if (!user)
               li
                 a(href='/login') LogIn
               li

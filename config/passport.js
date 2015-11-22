@@ -36,8 +36,6 @@ module.exports = function(passport) {
           newUser.admin = Boolean(req.body.admin);
           newUser.name = req.body.name;
 
-          app.locals.username
-
           newUser.save(function(err, user) {
             if (err){
               throw err;
