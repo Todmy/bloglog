@@ -12,17 +12,17 @@ block content
         .well
           h3
             span.fa.fa-user
-            |  Your personal information
-          if (user.email)
+            |  #{user.name ? user.name : '*Nobody*'}, it is your personal information:
+          if (user.username)
             p
               strong id
-              | : user._id
+              | : #{user._id}
               br
-              strong email
-              | : user.email
+              strong username
+              | : #{user.username}
               br
-              strong password
-              | : user.password
-            a.btn.btn-default(href='/unlink/local') Unlink
-          else
-            a.btn.btn-default(href='/connect/local') Connect Local
+              strong password (encoded)
+              | : #{user.password}
+              br
+              strong is Admin
+              | : #{user.admin}

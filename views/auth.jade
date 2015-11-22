@@ -14,11 +14,18 @@ block content
           .alert.alert-danger  #{message}
         form(action=page, method='post')
           .form-group
-            label Email
-            input.form-control(type='text', name='email')
+            label Username
+            input.form-control(type='text', name='username')
           .form-group
             label Password
             input.form-control(type='password', name='password')
+          if page === '/signup'
+            .form-group
+              label Real Name
+              input.form-control(type='text', name='name')
+            .form-group
+              label Admin
+              input.form-control(type='checkbox', name='admin')
           button.btn.btn-warning.btn-lg(type='submit') Login
         hr
         p

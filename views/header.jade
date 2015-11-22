@@ -17,7 +17,7 @@ html
             li
               a(href='/contact') Contact
           ul.authorization.nav.navbar-nav.pull-right
-            if (!username)
+            if (!isLoggedIn)
               li
                 a(href='/login') LogIn
               li
@@ -26,4 +26,4 @@ html
               li
                 a(href='/logout') LogOut
               li
-                a(href='/userinfo') UserInfo
+                a(href='/profile') UserInfo
