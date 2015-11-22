@@ -4,11 +4,13 @@ module.exports = function(app, passport) {
   });
 
   app.get('/login', function(req, res) {
-    res.render('login', { message: req.flash('loginMessage') })
+    res.render('auth', { page: req.path, message: req.flash('loginMessage') })
+    // res.render('login', { message: req.flash('loginMessage') })
   });
 
   app.get('/signup', function(req, res) {
-    res.render('signup', { message: req.flash('signupMessage') })
+    res.render('auth', { page: req.path, message: req.flash('signupMessage') })
+    // res.render('signup', { message: req.flash('signupMessage') })
   });
 
   app.get('/profile', isLoggedIn, function(req, res) {
@@ -16,6 +18,7 @@ module.exports = function(app, passport) {
   });
 
   app.get('/logout', function(req, res) {
+    delete app.locals.username; // app.locals.username = profile.username;
     req.logout();
     res.redirect('/')
   });
