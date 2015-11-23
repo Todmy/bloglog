@@ -3,15 +3,27 @@ extends layout
 block content
   body
     .container
-      .page-header
-        h1 #{article.title}
-      p.details
-        |Author: &nbsp;
-        span #{article.author}
-        |;&nbsp;&nbsp; Created: &nbsp;
-        span #{article.date}
-      p.content
-        | #{article.content}
-      if user.admin
-        a.btn.btn-default(href='/articles/' + article.id + '/edit', role='button') Edit
-      a.btn.btn-default(href='/articles/' + article.id + '/comment', role='button') Comment
+      if page.split('/').reverse()[0] === 'edit'
+        p
+          | edit form
+      else
+        .page-header
+          h1 #{article.title}
+        p.details
+          | #{page}
+          |Author: &nbsp;
+          span #{article.author}
+          |;&nbsp;&nbsp; Created: &nbsp;
+          span #{article.date}
+        p.content
+          | #{article.content}
+        if user.admin
+          a.btn.btn-default(href='/articles/' + article.id + '/edit', role='button') Edit
+          button#remove-article.btn.btn-default(data-article-id=article.id) Remove
+        button#comment-article.btn.btn-default(data-article-id=article.id) Comment
+        form#comment-form.hidden(action='/articles/' + article.id + '/comment', method='POST')
+          #comment-name.form-row.hidden
+            input#name(type='text', value=user.username, name='username')
+          #comment-message.form-row
+            textarea#comment.form-control(name='comment', placeholder='Message')
+          input.btn.btn-default#comment-submit(type='submit', name='dsubmit', value='Submit Comment')

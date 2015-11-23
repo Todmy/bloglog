@@ -15,7 +15,8 @@ module.exports = function(app, passport) {
   });
 
   app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/',
+    successRedirect: '/article/123',
+    // successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
   }))
@@ -40,7 +41,6 @@ module.exports = function(app, passport) {
   });
 
   app.get('/article/:id', isLoggedIn, function(req, res) {
-    console.log('-------------------->', req.params.id) //
     var article = {
       id: '123dsfe2',
       title: 'bla',
@@ -49,6 +49,11 @@ module.exports = function(app, passport) {
       author: 'username_Dima'
     }
     res.render('article', { article: article })
+  })
+
+  app.delete('/article/:id', isLoggedIn, function(req, res) {
+    console.log(req.params.id); // remove
+    res.status(200).send('Article removed');
   })
 };
 
