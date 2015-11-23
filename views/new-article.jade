@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  .container
+    form(action='/article/new', method='POST')
+      input.form-control(type='text', name='title', placeholder='Article Name')
+      input#todayDate(type='hidden', name='date')
+      textarea#article-content.form-control(rows='10', name='content', placeholder='Article Body')
+      button.btn.btn-primary(type='submit', value='Submit') Submit
+      button.btn.btn-default(type='reset', value='Reset') Reset
+      a.btn.btn-warning(href='/', role='button') Cancel

@@ -1,0 +1,22 @@
+html
+  body
+    if user
+      button#comment-article.btn.btn-default(data-article-id=article.id) Comment
+      form#comment-form.hidden(action='/article/' + article.id + '/comment', method='POST')
+        input#name(type='text', value=user.username, name='username')
+        input#todayDate(type='hidden', name='date')
+        #comment-message.form-row
+          textarea#comment.form-control(name='comment', placeholder='Message')
+        input.btn.btn-default#comment-submit(type='submit', value='Submit Comment')
+      hr
+      #comments
+        .row
+          .col-sm-2
+            .thumbnail
+              img.img-responsive.user-photo(src='https://ssl.gstatic.com/accounts/ui/avatar_2x.png')
+          .col-sm-10
+            .panel.panel-default
+              .panel-heading
+                strong myusername &nbsp;
+              .panel-body
+                | Panel content

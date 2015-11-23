@@ -6,6 +6,11 @@ module.exports = function(app, passport) {
     next();
   });
 
+  app.all('/article/*', isLoggedIn, function(req, res, next) {
+    console.log(req.body)
+    next();
+  });
+
   app.get('/', function(req, res) {
     res.render('index');
   });
@@ -40,7 +45,17 @@ module.exports = function(app, passport) {
     res.redirect('/')
   });
 
-  app.get('/article/:id', isLoggedIn, function(req, res) {
+  app.get('/article/new', function(req, res) {
+    console.log(req.params.id);
+    res.render('new-article');
+  })
+
+  app.post('/article/new', function(req, res) {
+    console.log(req.params.id); // create
+    res.status(200).send('Article created');
+  })
+
+  app.get('/article/:id', function(req, res) {
     var article = {
       id: '123dsfe2',
       title: 'bla',
@@ -51,9 +66,19 @@ module.exports = function(app, passport) {
     res.render('article', { article: article })
   })
 
-  app.delete('/article/:id', isLoggedIn, function(req, res) {
+  app.put('/article/:id', function(req, res) {
+    console.log(req.params.id); // update
+    res.status(200).send('Article updated');
+  })
+
+  app.delete('/article/:id', function(req, res) {
     console.log(req.params.id); // remove
     res.status(200).send('Article removed');
+  })
+
+  app.post('/article/:id/comment', function(req, res) {
+    console.log(req.body);
+    res.redirect('/article/' + req.params.id);
   })
 };
 

@@ -12,6 +12,9 @@ html
           ul.nav.navbar-nav
             li.active
               a(href='/') Home
+            if (user && user.admin)
+              li
+                a(href='/article/new') CreateArticle
             li
               a(href='/about') About
             li

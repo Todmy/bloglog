@@ -7,23 +7,18 @@ block content
         p
           | edit form
       else
-        .page-header
+        .page-header#article-title
           h1 #{article.title}
         p.details
-          | #{page}
-          |Author: &nbsp;
+          | Author: &nbsp;
           span #{article.author}
           |;&nbsp;&nbsp; Created: &nbsp;
           span #{article.date}
-        p.content
+        p.content#article-content
           | #{article.content}
-        if user.admin
-          a.btn.btn-default(href='/articles/' + article.id + '/edit', role='button') Edit
+        if (user && user.admin)
+          // a.btn.btn-default(href='/articles/' + article.id + '/edit', role='button') Edit
+          button#edit-article.btn.btn-default(data-article-id=article.id) Edit
           button#remove-article.btn.btn-default(data-article-id=article.id) Remove
-        button#comment-article.btn.btn-default(data-article-id=article.id) Comment
-        form#comment-form.hidden(action='/articles/' + article.id + '/comment', method='POST')
-          #comment-name.form-row.hidden
-            input#name(type='text', value=user.username, name='username')
-          #comment-message.form-row
-            textarea#comment.form-control(name='comment', placeholder='Message')
-          input.btn.btn-default#comment-submit(type='submit', name='dsubmit', value='Submit Comment')
+
+        include ./comments.jade
