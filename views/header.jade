@@ -10,15 +10,13 @@ html
           a.navbar-brand(href='/') BlogLog
         .collapse.navbar-collapse
           ul.nav.navbar-nav
-            li.active
+            li
               a(href='/') Home
             if (user && user.admin)
               li
                 a(href='/article/new') CreateArticle
             li
               a(href='/about') About
-            li
-              a(href='/contact') Contact
           ul.authorization.nav.navbar-nav.pull-right
             if (!user)
               li

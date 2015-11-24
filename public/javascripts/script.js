@@ -15,7 +15,7 @@
       type: 'PUT',
       data: {
         title: title,
-        content: content
+        body: content
       },
       success: function(message, status) {
         if (status === 'success') {
@@ -58,7 +58,7 @@
     $(event.target).addClass('hidden');
   })
 
-  $( document ).ready(function() {
+  $(document).ready(function() {
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -73,5 +73,10 @@
 
     $('#todayDate').val(today);
   })
+
+  $('.nav.navbar-nav li').filter(function(index, element) {
+    $(element).removeClass('active')
+    return $('a', this).attr('href') === window.location.pathname;
+  }).addClass('active')
 
 })(jQuery)

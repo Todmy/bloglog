@@ -1,3 +1,6 @@
+var Article = require('./models/article');
+var extend = require('util')._extend;
+
 module.exports = function(app, passport) {
 
   app.all('*', function(req, res, next) {
@@ -6,13 +9,16 @@ module.exports = function(app, passport) {
     next();
   });
 
-  app.all('/article/*', isLoggedIn, function(req, res, next) {
-    console.log(req.body)
-    next();
-  });
+  app.all('/article/*', isLoggedIn);
 
   app.get('/', function(req, res) {
-    res.render('index');
+    Article.find({}, function(err, articles) {
+      if (err){
+        throw err;
+      }
+
+      res.render('index', {articles: articles});
+    })
   });
 
   app.get('/login', isAuthorized, function(req, res) {
@@ -20,8 +26,7 @@ module.exports = function(app, passport) {
   });
 
   app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/article/123',
-    // successRedirect: '/',
+    successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
   }))
@@ -37,7 +42,7 @@ module.exports = function(app, passport) {
   }));
 
   app.get('/profile', isLoggedIn, function(req, res) {
-    res.render('profile', { user: req.user });
+    res.render('profile');
   });
 
   app.get('/logout', function(req, res) {
@@ -45,39 +50,69 @@ module.exports = function(app, passport) {
     res.redirect('/')
   });
 
+  app.get('/about', function(req, res) {
+    res.render('about');
+  });
+
   app.get('/article/new', function(req, res) {
-    console.log(req.params.id);
     res.render('new-article');
   })
 
   app.post('/article/new', function(req, res) {
-    console.log(req.params.id); // create
-    res.status(200).send('Article created');
+    var articleParams = extend({author: req.user.username}, req.body)
+    var newArticle = new Article(articleParams)
+    newArticle.save(function(err) {
+      if (err){
+        throw err;
+      }
+    })
+    res.redirect('/');
   })
 
   app.get('/article/:id', function(req, res) {
-    var article = {
-      id: '123dsfe2',
-      title: 'bla',
-      date: '23/11/2015 12:45:51',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      author: 'username_Dima'
-    }
-    res.render('article', { article: article })
+    Article.findById(req.params.id, function(err, article) {
+      if (err){
+        throw err;
+      }
+
+      res.render('article', { article: article })
+    })
   })
 
   app.put('/article/:id', function(req, res) {
-    console.log(req.params.id); // update
-    res.status(200).send('Article updated');
+    Article.findByIdAndUpdate(req.params.id, { $set: req.body}, function(err) {
+      if (err){
+        throw err;
+      }
+
+      res.status(200).send('Article updated');
+    })
   })
 
   app.delete('/article/:id', function(req, res) {
-    console.log(req.params.id); // remove
-    res.status(200).send('Article removed');
+    Article.findByIdAndRemove(req.params.id, function(err) {
+      if (err){
+        throw err;
+      }
+
+      res.status(200).send('Article removed');
+    })
   })
 
   app.post('/article/:id/comment', function(req, res) {
-    console.log(req.body);
+    Article.findById(req.params.id, function(err, article) {
+      if (err){
+        throw err;
+      }
+      article.comments.unshift(req.body);
+
+      article.save(function(err) {
+        if (err){
+          throw err;
+        }
+      })
+    })
+    
     res.redirect('/article/' + req.params.id);
   })
 };

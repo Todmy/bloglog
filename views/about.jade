@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  section#carousel
+    .container
+      .row
+        .col-md-8.col-md-offset-2
+          .quote
+            i.fa.fa-quote-left.fa-4x
+          #fade-quote-carousel.carousel.slide(data-ride='carousel', data-interval='3000')
+            .carousel-inner
+              .active.item
+                blockquote
+                  p
+                    | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque molestias odio aut eius animi. Impedit temporibus nisi accusamus.
+                .profile-circle(style='background-color: rgba(0,0,0,.2);')
+              .item
+                blockquote
+                  p
+                    | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque molestias odio aut eius animi. Impedit temporibus nisi accusamus.
+                .profile-circle(style='background-color: rgba(77,5,51,.2);')
+              .item
+                blockquote
+                  p
+                    | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque molestias odio aut eius animi. Impedit temporibus nisi accusamus.
+                .profile-circle(style='background-color: rgba(145,169,216,.2);')

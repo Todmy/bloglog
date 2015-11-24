@@ -10,15 +10,14 @@ block content
         .page-header#article-title
           h1 #{article.title}
         p.details
-          | Author: &nbsp;
+          strong Author: &nbsp;
           span #{article.author}
-          |;&nbsp;&nbsp; Created: &nbsp;
+          strong;&nbsp;&nbsp; Created: &nbsp;
           span #{article.date}
         p.content#article-content
-          | #{article.content}
+          | #{article.body}
         if (user && user.admin)
-          // a.btn.btn-default(href='/articles/' + article.id + '/edit', role='button') Edit
           button#edit-article.btn.btn-default(data-article-id=article.id) Edit
-          button#remove-article.btn.btn-default(data-article-id=article.id) Remove
+          button#remove-article.btn.btn-warning(data-article-id=article.id) Remove
 
         include ./comments.jade
