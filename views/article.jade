@@ -14,7 +14,7 @@ block content
           span #{article.author}
           strong;&nbsp;&nbsp; Created: &nbsp;
           span #{article.date}
-        p.content#article-content
+        div.content.article-body#article-content
           | #{article.body}
         if (user && user.admin)
           button#edit-article.btn.btn-default(data-article-id=article.id) Edit

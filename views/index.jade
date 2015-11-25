@@ -2,10 +2,12 @@ extends layout
 
 block content
   .container
+    .pagination(data-current-page=pagination.currentPage, data-pages-amount=pagination.pagesAmount)
     each article in articles
       .article
         .article-header
           a(href='/article/' + article.id)
             h1 #{article.title}
-        p.lead.summary
+        div.lead.summary.article-body
           | #{article.body.slice(0, 400) + ' <...>'}
+    .pagination(data-current-page=pagination.currentPage, data-pages-amount=pagination.pagesAmount)

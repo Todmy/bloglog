@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var mongoosePaginate = require('mongoose-paginate');
 
 var articleSchema = new Schema({
   title:  String,
@@ -9,5 +10,7 @@ var articleSchema = new Schema({
   date: { type: Date, default: Date.now },
   hidden: { type: Boolean, default: false }
 });
+
+articleSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Article', articleSchema);

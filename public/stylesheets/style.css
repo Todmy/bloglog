@@ -1,5 +1,4 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -8,7 +7,6 @@ a {
 }
 
 body {
-  padding-bottom: 40px;
   color: #5a5a5a;
 }
 
@@ -37,6 +35,14 @@ textarea {
 .article {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.wysihtml5-toolbar {
+  padding-top: 20px !important;
+}
+
+#article-content {
+  padding-bottom: 20px;
 }
 
 /* Sticky footer styles

@@ -31,7 +31,8 @@
 
     $(event.target).addClass('confirm').text('Update article')
     title.replaceWith('<input type="text" class="form-control" id="article-title" value="' + title.text() + '">')
-    content.replaceWith('<textarea class="form-control" rows="10" id="article-content">' + content.text() + '</textarea>')
+    content.replaceWith('<textarea class="form-control" rows="10" id="article-content">' + content.html() + '</textarea>');
+    $('textarea#article-content').wysihtml5();
   }
 
   $('#remove-article').click(function(event) {
@@ -58,25 +59,33 @@
     $(event.target).addClass('hidden');
   })
 
-  $(document).ready(function() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth()+1; //January is 0!
-    var yyyy = today.getFullYear();
-    if (dd<10) {
-      dd='0'+dd;
-    }
-    if (mm<10) {
-      mm='0'+mm;
-    }
-    today = yyyy + '/' + mm + '/' + dd;
+  $('textarea#article-content').wysihtml5();
 
-    $('#todayDate').val(today);
-  })
+  $(function() {
+    $('div.article-body').each(function(index, articleBody) {
+      var content = $.parseHTML($(articleBody).text());
+      $(articleBody).text('').append(content);
+    })
+  });
 
   $('.nav.navbar-nav li').filter(function(index, element) {
     $(element).removeClass('active')
     return $('a', this).attr('href') === window.location.pathname;
   }).addClass('active')
+
+  $(function() {
+    var currentPage = $('.pagination').data('current-page');
+    var pagesAmount = $('.pagination').data('pages-amount');
+
+    $('.pagination').bootpag({
+      total: pagesAmount,
+      page: currentPage,
+      maxVisible: 10
+    }).on("page", function(event, selectedPage){
+      location.search='page=' + selectedPage;
+    });
+  });
+
+
 
 })(jQuery)

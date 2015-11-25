@@ -1,9 +1,10 @@
 var Article = require('./models/article');
 var extend = require('util')._extend;
 
+
 module.exports = function(app, passport) {
 
-  app.all('*', function(req, res, next) {
+  app.use(function(req, res, next) {
     app.locals.user = req.user;
     app.locals.page = req.path;
     next();
@@ -12,13 +13,28 @@ module.exports = function(app, passport) {
   app.all('/article/*', isLoggedIn);
 
   app.get('/', function(req, res) {
-    Article.find({}, function(err, articles) {
+    var page = req.query.page || 1;
+    
+    Article.paginate({}, {
+      page: page,
+      limit: 5,
+      sortBy: {
+        date: -1
+      }
+    }, function(err, articles, pagesAmount, articlesAmount) {
       if (err){
         throw err;
       }
 
-      res.render('index', {articles: articles});
-    })
+      res.render('index', {
+        articles: articles,
+        pagination: {
+          currentPage: page,
+          pagesAmount: pagesAmount,
+          articlesAmount: articlesAmount
+        }});
+    });
+    // Article.find({}, )
   });
 
   app.get('/login', isAuthorized, function(req, res) {
@@ -112,7 +128,7 @@ module.exports = function(app, passport) {
         }
       })
     })
-    
+
     res.redirect('/article/' + req.params.id);
   })
 };
